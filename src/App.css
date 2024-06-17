@@ -1,0 +1,12 @@
+.App {
+  text-align: center;
+}
+
+.card {
+  width: 10rem;
+  aspect-ratio: 40 / 40;
+  background-color: #afeeee;
+  box-shadow: 0 0 6px black;
+  border: 0.5rem white solid;
+  border-radius: 0.5rem;
+}
