@@ -8,42 +8,42 @@ function App() {
     {
       name: 1,
       img: "./img/buta.png",
-      opened: true
+      opened: false
     },
     {
       name: 2,
       img: "./img/hitsuji.png",
-      opened: true
+      opened: false
     },
     {
       name: 3,
       img: "./img/inu.png",
-      opened: true
+      opened: false
     },
     {
       name: 4,
       img: "./img/lion.png",
-      opened: true
+      opened: false
     },
     {
       name: 5,
       img: "./img/neko.png",
-      opened: true
+      opened: false
     },
     {
       name: 6,
       img: "./img/penguin.png",
-      opened: true
+      opened: false
     },
     {
       name: 7,
       img: "./img/tora.png",
-      opened: true
+      opened: false
     },
     {
       name: 8,
       img: "./img/usagi.png",
-      opened: true
+      opened: false
     }
   ]
 
@@ -55,9 +55,7 @@ function App() {
     }
   ]);
 
-// 裏表くるくる
-  const [isOpen, setIsOpen] = useState(false)
-  const [get, setGet] = useState();
+
 
   const shuffleImages = () => {
     const shuffledImages = [...images, ...images]
@@ -70,15 +68,28 @@ function App() {
     shuffleImages();
   }, []);
 
-  const getCard = (id) => {
-     setGet(cards.find((card) => card.id === id))
-     console.log(get)
-     console.log(id)
-  }
+
   // カードを押すとひっくり返る
-  const toggleCard = () => {
-    setIsOpen()
+  const toggleCard = (index) => {
+    const newCards = cards.slice()
+    newCards[index] = {
+      ...newCards[index],
+      opened: !newCards[index].opened
+    }
+    setCards(newCards)
   }
+
+  useEffect(() => {
+    console.log("2")
+  },[])
+  // const toggleCard = (index) => {
+  //   const newIsOpen = isOpen.slice()
+  //   newIsOpen[index] = !newIsOpen[index]
+  //   setIsOpen(newIsOpen)
+  // }
+
+  // 三枚目をひっくり返せない(二枚まで)
+
  
   // 正解不正解の判定
   const correctAnswer = () => {
@@ -94,22 +105,17 @@ function App() {
   return (
     <div className="App">
       <div>
-        {/* カードを並べる */}
-        {/* {cards.map((card) => {
-          return (<img src ={card.img} />)
-        })} */}
       </div>
-      <div>
+      <div className='main'>
         {
-          cards.map((card) => {
-            return (<div onClick={() => {card.opened = !card.opened; setIsOpen()}}> {card.opened ? <img src ={card.img} className='card'/> : <img className='card'/>}</div>)
+          cards.map((card, index) => {
+            return (<div className='margin' onClick={() => toggleCard(index)}> {card.opened ? <img src ={card.img} className='card'/> : <img className='card'/>}</div>)
           })
         }
-        {/* {toggle
-        ?<img className='card' src = {cards[0]?.img} />
-        :<img className='card' />} */}
+
       </div>
-     <img src ={cards[0]?.img} className='card' onClick={() => getCard(cards[1])}/>
+      {/* return (<div className='margin' onClick={() => toggleCard(index)}> {isOpen[index] ? <img src ={card.img} className='card'/> : <img className='card'/>}</div>) */}
+      {/* return (<div className='margin' onClick={() => toggleCard(index)}> {card.opened ? <img src ={card.img} className='card'/> : <img className='card'/>}</div>) */}
     </div>
   );
 }

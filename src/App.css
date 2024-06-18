@@ -10,3 +10,12 @@
   border: 0.5rem white solid;
   border-radius: 0.5rem;
 }
+
+.margin {
+  margin: 10px;
+  width: 176px;
+}
+.main {
+  display: flex;
+  flex-wrap: wrap;
+}
