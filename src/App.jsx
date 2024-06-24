@@ -192,7 +192,7 @@ function App() {
       </div>
       <div>
         <button type="button" onClick={() => clickButton()}>
-          リセット
+          めくり終わったら押すボタン
         </button>
       </div>
     </div>
