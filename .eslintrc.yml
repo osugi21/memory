@@ -13,6 +13,7 @@ rules:
   react-hooks/exhaustive-deps: warn
   react/react-in-jsx-scope: off
   no-param-reassign: off
+  no-unused-vars: warn
   # スプレッド構文のエラーを確認なしに変更
   "react/jsx-props-no-spreading": off
   # props をオプションで渡すことを許可

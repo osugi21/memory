@@ -53,63 +53,148 @@ function App() {
       opened: false
     }
   ])
+  const [count, setCount] = useState(1)
+  const [selectedCard, setSelectedCard] = useState([])
+  const [showPopup, setShowPopup] = useState(false)
+  const [totalCount, setTotalCount] = useState(0)
+  const [complete, setComplete] = useState(false)
 
   const shuffleImages = () => {
     const shuffledImages = [...images, ...images]
-      .map((item, index) => ({ ...item, id: index + 1 }))
-      .sort((a, b) => 0.5 - Math.random())
+      .map((item, index) => ({
+        ...item,
+        id: index + 1
+      }))
+      .sort(() => 0.5 - Math.random())
     setCards(shuffledImages)
   }
 
-  useEffect(() => {
-    shuffleImages()
-  }, [])
+  // useEffect(() => {
+  //   shuffleImages()
+  // }, [])
 
   // カードを押すとひっくり返る
   const toggleCard = (index) => {
+    setCount(count + 1)
+    console.log(selectedCard)
     const newCards = cards.slice()
-    newCards[index] = {
-      ...newCards[index],
-      opened: !newCards[index].opened
+    if (count <= 2) {
+      newCards[index] = {
+        ...newCards[index],
+        opened: !newCards[index].opened
+      }
+      setCards(newCards)
     }
-    setCards(newCards)
+    if (count >= 3) {
+      console.log('三枚目は裏返せないよ')
+    }
+    const newSelect = [...selectedCard, newCards[index]]
+    setSelectedCard(newSelect)
+    if (newSelect.length === 2) {
+      if (newSelect[0].name === newSelect[1].name) {
+        setShowPopup(true)
+        setTimeout(() => {
+          setShowPopup(false)
+        }, 1000)
+      }
+    }
+    const isComplete = newCards.every((card) => card.opened === true)
+    setComplete(isComplete)
+  }
+
+  const clickButton = () => {
+    setCount(1)
+    if (selectedCard.length === 2) {
+      if (selectedCard[0].name === selectedCard[1].name) {
+        const openCards = cards.map((card) =>
+          card.id === selectedCard[0].id || card.id === selectedCard[1].id
+            ? { ...card, opened: true }
+            : card
+        )
+        setCards(openCards)
+        setTotalCount(totalCount)
+      } else {
+        const resetCards = cards.map((card) =>
+          card.id === selectedCard[0].id || card.id === selectedCard[1].id
+            ? { ...card, opened: false }
+            : card
+        )
+        setCards(resetCards)
+        setTotalCount(totalCount + 1)
+      }
+    }
+    setSelectedCard([])
+    // trueになってるものを裏返す
   }
 
   useEffect(() => {
-    console.log('2')
-  }, [])
-  // const toggleCard = (index) => {
-  //   const newIsOpen = isOpen.slice()
-  //   newIsOpen[index] = !newIsOpen[index]
-  //   setIsOpen(newIsOpen)
-  // }
+    if (totalCount >= 11) {
+      alert('残念！やり直し！')
+      shuffleImages()
+      setTotalCount(0)
+      setCount(0)
+    }
+    // if (totalCount === 0) {
+    //   shuffleImages()
+    // }
+  }, [totalCount])
 
-  // 三枚目をひっくり返せない(二枚まで)
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      shuffleImages()
+      setTotalCount(0)
+      setCount(0)
+      setComplete(false)
+    }, 3000)
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [complete === true])
 
-  // 正解不正解の判定
-  const correctAnswer = () => {}
-
-  // 回数制限で失敗
-  const failure = () => {}
-
+  console.log(complete)
   // console.log(cards)
   return (
     <div className="App">
-      <div />
-      <div className="main">
-        {cards.map((card, index) => (
-          <div className="margin" onClick={() => toggleCard(index)}>
-            {' '}
-            {card.opened ? (
-              <img src={card.img} className="card" />
-            ) : (
-              <img className="card" />
-            )}
-          </div>
-        ))}
+      {showPopup && (
+        <div className="popup">
+          <h2>あたり！</h2>
+        </div>
+      )}
+      {complete ? (
+        <div className="popup">
+          <h2>成功！</h2>
+        </div>
+      ) : (
+        console.log('a')
+      )}
+      <div className='header'>
+        <h1>神経衰弱</h1>
+        <h2> 失敗数{totalCount}/10回</h2>
       </div>
-      {/* return (<div className='margin' onClick={() => toggleCard(index)}> {isOpen[index] ? <img src ={card.img} className='card'/> : <img className='card'/>}</div>) */}
-      {/* return (<div className='margin' onClick={() => toggleCard(index)}> {card.opened ? <img src ={card.img} className='card'/> : <img className='card'/>}</div>) */}
+      <div className="game-container">
+        <div className="main">
+          {cards.map((card, index) => (
+            <div
+              role="button"
+              className="margin"
+              onClick={() => toggleCard(index)}
+              aria-hidden="true"
+            >
+              {' '}
+              {card.opened ? (
+                <img src={card.img} className="card" alt="" />
+              ) : (
+                <div className="card" alt="" />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+      <div>
+        <button type="button" onClick={() => clickButton()}>
+          リセット
+        </button>
+      </div>
     </div>
   )
 }
