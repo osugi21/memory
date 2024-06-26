@@ -53,7 +53,7 @@ function App() {
       opened: false
     }
   ])
-  const [count, setCount] = useState(1)
+  const [count, setCount] = useState(0)
   const [selectedCard, setSelectedCard] = useState([])
   const [showPopup, setShowPopup] = useState(false)
   const [totalCount, setTotalCount] = useState(0)
@@ -78,20 +78,24 @@ function App() {
     setCount(count + 1)
     console.log(selectedCard)
     const newCards = cards.slice()
-    if (count <= 2) {
+    const newSelect = [...selectedCard, newCards[index]]
+    console.log(newSelect)
+    setSelectedCard(newSelect)
+    if (count === 0 || count === 1) {
       newCards[index] = {
         ...newCards[index],
         opened: !newCards[index].opened
       }
       setCards(newCards)
     }
-    if (count >= 3) {
+    if (count >= 2) {
       console.log('三枚目は裏返せないよ')
     }
-    const newSelect = [...selectedCard, newCards[index]]
-    setSelectedCard(newSelect)
     if (newSelect.length === 2) {
-      if (newSelect[0].name === newSelect[1].name) {
+      if (
+        newSelect[0].name === newSelect[1].name &&
+        newSelect[0].id !== newSelect[1].id
+      ) {
         setShowPopup(true)
         setTimeout(() => {
           setShowPopup(false)
@@ -103,14 +107,15 @@ function App() {
   }
 
   const clickButton = () => {
-    setCount(1)
+    setCount(0)
     if (selectedCard.length === 2) {
       if (selectedCard[0].name === selectedCard[1].name) {
-        const openCards = cards.map((card) =>
-          card.id === selectedCard[0].id || card.id === selectedCard[1].id
-            ? { ...card, opened: true }
-            : card
-        )
+        // ここおかしいかも
+        // const openCards = cards.map((card) =>
+        //   card.id === selectedCard[0].id || card.id === selectedCard[1].id
+        //     ? { ...card, opened: true }
+        //     : card
+        // )
         setCards(openCards)
         setTotalCount(totalCount)
       } else {
@@ -167,7 +172,7 @@ function App() {
       ) : (
         console.log('a')
       )}
-      <div className='header'>
+      <div className="header">
         <h1>神経衰弱</h1>
         <h2> 失敗数{totalCount}/10回</h2>
       </div>
