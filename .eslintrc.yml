@@ -8,6 +8,12 @@ extends:
 plugins:
   - react
   - react-hooks
+settings:
+  import/resolver:
+    node:
+      extensions:
+        - .js
+        - .jsx
 rules:
   react-hooks/rules-of-hooks: error
   react-hooks/exhaustive-deps: warn
@@ -15,9 +21,9 @@ rules:
   no-param-reassign: off
   no-unused-vars: warn
   # スプレッド構文のエラーを確認なしに変更
-  "react/jsx-props-no-spreading": off
+  'react/jsx-props-no-spreading': off
   # props をオプションで渡すことを許可
-  "react/require-default-props": off
+  'react/require-default-props': off
   semi:
     - error
     - never
@@ -25,3 +31,6 @@ rules:
     - error
     - js: never
       jsx: never
+  import/no-extraneous-dependencies:
+    - error
+    - devDependencies: false
