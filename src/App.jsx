@@ -3,6 +3,7 @@ import './App.css'
 import { render } from '@testing-library/react'
 
 function App() {
+  // カードの画像
   const images = [
     {
       name: 1,
@@ -46,6 +47,8 @@ function App() {
     }
   ]
 
+  // ゲームに必要なステート類
+  // gameのカード
   const [cards, setCards] = useState([
     {
       name: 8,
@@ -53,12 +56,18 @@ function App() {
       opened: false
     }
   ])
+  // 1枚目か２枚目かそういう、めくれているカードの枚数を保持するステート
   const [count, setCount] = useState(1)
+  // 選択されたカード つまり、画像が表示されているカード
   const [selectedCard, setSelectedCard] = useState([])
+  // ポップアップの表示がされるかどうか
   const [showPopup, setShowPopup] = useState(false)
+  // 失敗した回数
   const [totalCount, setTotalCount] = useState(0)
+  // ゲームが終了したかどうか
   const [complete, setComplete] = useState(false)
 
+  // カードをシャッフルして配置
   const shuffleImages = () => {
     const shuffledImages = [...images, ...images]
       .map((item, index) => ({
@@ -66,6 +75,8 @@ function App() {
         id: index + 1
       }))
       .sort(() => 0.5 - Math.random())
+
+    // ゲーム用にカードを初期化
     setCards(shuffledImages)
   }
 
@@ -74,9 +85,14 @@ function App() {
   // }, [])
 
   // カードを押すとひっくり返る
+  // カードをひっくり返す関数
   const toggleCard = (index) => {
+    // めくったのでカウントを増やす
     setCount(count + 1)
+    // setCount((prevCount) => prevCount + 1)
     console.log(selectedCard)
+
+    // gameのカードをコピー
     const newCards = cards.slice()
     if (count <= 2) {
       newCards[index] = {
@@ -102,10 +118,13 @@ function App() {
     setComplete(isComplete)
   }
 
+  // めくったカードが2枚の時に押すボタンの処理
   const clickButton = () => {
     setCount(1)
+    // めくったカードが2枚の時
     if (selectedCard.length === 2) {
       if (selectedCard[0].name === selectedCard[1].name) {
+        // カードをオープンにする処理（opendをtrueにする）
         const openCards = cards.map((card) =>
           card.id === selectedCard[0].id || card.id === selectedCard[1].id
             ? { ...card, opened: true }
@@ -123,10 +142,12 @@ function App() {
         setTotalCount(totalCount + 1)
       }
     }
+
     setSelectedCard([])
     // trueになってるものを裏返す
   }
 
+  // ゲームをやり直しする処理
   useEffect(() => {
     if (totalCount >= 11) {
       alert('残念！やり直し！')
@@ -139,6 +160,7 @@ function App() {
     // }
   }, [totalCount])
 
+  // ゲームが終了したら3秒後にリセットする処理
   useEffect(() => {
     const timeout = setTimeout(() => {
       shuffleImages()
@@ -151,8 +173,10 @@ function App() {
     }
   }, [complete === true])
 
-  console.log(complete)
+  // console.log(complete)
   // console.log(cards)
+
+  // 画面描写部分
   return (
     <div className="App">
       {showPopup && (
@@ -165,9 +189,9 @@ function App() {
           <h2>成功！</h2>
         </div>
       ) : (
-        console.log('a')
+        console.log('ゲームは続く')
       )}
-      <div className='header'>
+      <div className="header">
         <h1>神経衰弱</h1>
         <h2> 失敗数{totalCount}/10回</h2>
       </div>
@@ -180,7 +204,6 @@ function App() {
               onClick={() => toggleCard(index)}
               aria-hidden="true"
             >
-              {' '}
               {card.opened ? (
                 <img src={card.img} className="card" alt="" />
               ) : (
