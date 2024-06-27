@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import { render } from '@testing-library/react'
+import Card from './components/Card'
 
 function App() {
   // カードの画像
@@ -198,18 +199,7 @@ function App() {
       <div className="game-container">
         <div className="main">
           {cards.map((card, index) => (
-            <div
-              role="button"
-              className="margin"
-              onClick={() => toggleCard(index)}
-              aria-hidden="true"
-            >
-              {card.opened ? (
-                <img src={card.img} className="card" alt="" />
-              ) : (
-                <div className="card" alt="" />
-              )}
-            </div>
+            <Card card={card} index={index} toggleCard={toggleCard} />
           ))}
         </div>
       </div>
