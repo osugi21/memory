@@ -133,7 +133,7 @@ function App() {
   }
 
   useEffect(() => {
-    if (totalCount >= 11) {
+    if (totalCount >= 9) {
       alert('残念！やり直し！')
       // カードがシャッフルされる
       shuffleImages()
@@ -175,7 +175,7 @@ function App() {
       )}
       <div className="header">
         <h1 className="wf-roundedmplus1c">神経衰弱</h1>
-        <h2 className="wf-roundedmplus1c"> 失敗数{totalCount}/10回</h2>
+        <h2 className="wf-roundedmplus1c"> 失敗数{totalCount}/8回</h2>
       </div>
       <div className="game-container">
         <div className="main">
