@@ -72,28 +72,18 @@ function App() {
     setCards(shuffledImages)
   }
 
-  // useEffect(() => {
-  //   shuffleImages()
-  // }, [])
-
-  // カードを押すとひっくり返る
   const toggleCard = (index) => {
-    console.log(selectedCard)
     if (cards[index].opened || selectedCard.length >= 2) {
       return
     }
     const newCards = cards.slice()
-    // 選んだカードの配列を作ってる
     const newSelect = [...selectedCard, newCards[index]]
-    console.log(newSelect)
     setSelectedCard(newSelect)
     if (newSelect.length <= 2) {
-      // カードをひっくり返す
       newCards[index] = {
         ...newCards[index],
         opened: !newCards[index].opened
       }
-      // ひっくり返した配列にセット
       setCards(newCards)
     }
     if (newSelect.length === 2) {
@@ -101,21 +91,18 @@ function App() {
         newSelect[0].name === newSelect[1].name &&
         newSelect[0].id !== newSelect[1].id
       ) {
-        // 当たりのエフェクトが一秒後出るようになる
         setShowPopup(true)
         setTimeout(() => {
           setShowPopup(false)
         }, 1000)
       }
     }
-    // 全てが表の時はtrue、全てが表出ないときはfalse
     const isComplete = newCards.every((card) => card.opened === true)
     setComplete(isComplete)
   }
 
   // 次がめくれるようになるボタン
   const clickButton = () => {
-    // 選んだカードの配列の長さが二個の時
     if (selectedCard.length <= 1) {
       return
     }
@@ -146,7 +133,6 @@ function App() {
   }
 
   useEffect(() => {
-    // 失敗数が11回以上になると
     if (totalCount >= 11) {
       alert('残念！やり直し！')
       // カードがシャッフルされる
@@ -171,7 +157,7 @@ function App() {
     }
   }, [complete === true])
 
-  console.log(complete)
+  // console.log(complete)
   // console.log(cards)
   return (
     <div className="App">
