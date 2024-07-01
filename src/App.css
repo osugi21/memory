@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c');
+.header .wf-roundedmplus1c {
+  font-family: 'M PLUS Rounded 1c';
+}
 .App {
   display: flex;
   flex-direction: column;
