@@ -78,8 +78,10 @@ function App() {
 
   // カードを押すとひっくり返る
   const toggleCard = (index) => {
-    // カードをクリックしたカウントを増やしていく
     console.log(selectedCard)
+    if (cards[index].opened || selectedCard.length >= 2) {
+      return
+    }
     const newCards = cards.slice()
     // 選んだカードの配列を作ってる
     const newSelect = [...selectedCard, newCards[index]]
@@ -93,9 +95,6 @@ function App() {
       }
       // ひっくり返した配列にセット
       setCards(newCards)
-    }
-    if (newSelect.length >= 3) {
-      console.log('3枚目以降はひっくり返せないよ')
     }
     if (newSelect.length === 2) {
       if (
@@ -117,6 +116,9 @@ function App() {
   // 次がめくれるようになるボタン
   const clickButton = () => {
     // 選んだカードの配列の長さが二個の時
+    if (selectedCard.length <= 1) {
+      return
+    }
     if (
       selectedCard.length === 2 &&
       selectedCard[0].name === selectedCard[1].name
@@ -183,7 +185,7 @@ function App() {
           <h2>成功！</h2>
         </div>
       ) : (
-        console.log('a')
+        console.log('終わらない')
       )}
       <div className="header">
         <h1>神経衰弱</h1>
