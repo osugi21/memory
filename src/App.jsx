@@ -132,6 +132,13 @@ function App() {
     setSelectedCard([])
   }
 
+  useEffect(()=> {
+    if(selectedCard.length === 2 &&
+      selectedCard[0].name === selectedCard[1].name){
+        setSelectedCard([])
+    }
+  },[selectedCard])
+
   useEffect(() => {
     if (totalCount >= 9) {
       alert('残念！やり直し！')
@@ -174,7 +181,7 @@ function App() {
         console.log('終わらない')
       )}
       <div className="header">
-        <h1 className="wf-roundedmplus1c">神経衰弱</h1>
+        <h1 className="wf-roundedmplus1c">🐾神経衰弱🐾</h1>
         <h2 className="wf-roundedmplus1c"> 失敗数{totalCount}/8回</h2>
       </div>
       <div className="game-container">
@@ -201,6 +208,7 @@ function App() {
           めくり終わったら押すボタン
         </button>
       </div>
+      <meta name="viewport" content="width=device-width,initial-scale=1" />
     </div>
   )
 }
