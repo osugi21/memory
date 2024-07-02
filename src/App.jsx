@@ -102,42 +102,71 @@ function App() {
   }
 
   // 次がめくれるようになるボタン
-  const clickButton = () => {
-    if (selectedCard.length <= 1) {
-      return
-    }
-    if (
-      selectedCard.length === 2 &&
-      selectedCard[0].name === selectedCard[1].name
-    ) {
-      const openCards = cards.map((card) =>
-        card.id === selectedCard[0].id || card.id === selectedCard[1].id
-          ? { ...card, opened: true }
-          : card
-      )
-      // 当たったもののカードを表にしたままの配列にセット
-      setCards(openCards)
-    } else {
-      // そのほかの場合カードを裏にする
-      const resetCards = cards.map((card) =>
-        card.id === selectedCard[0].id || card.id === selectedCard[1].id
-          ? { ...card, opened: false }
-          : card
-      )
-      setCards(resetCards)
-      // ボタンをクリックするとカウントが増える
-      setTotalCount(totalCount + 1)
-    }
-    // 選んだカードの配列は空にする
+  // const clickButton = () => {
+  //   if (selectedCard.length <= 1) {
+  //     return
+  //   }
+  //   if (
+  //     selectedCard.length === 2 &&
+  //     selectedCard[0].name === selectedCard[1].name
+  //   ) {
+  //     const openCards = cards.map((card) =>
+  //       card.id === selectedCard[0].id || card.id === selectedCard[1].id
+  //         ? { ...card, opened: true }
+  //         : card
+  //     )
+  //     // 当たったもののカードを表にしたままの配列にセット
+  //     setCards(openCards)
+  //   } else {
+  //     // そのほかの場合カードを裏にする
+  //     const resetCards = cards.map((card) =>
+  //       card.id === selectedCard[0].id || card.id === selectedCard[1].id
+  //         ? { ...card, opened: false }
+  //         : card
+  //     )
+  //     setCards(resetCards)
+  //     // ボタンをクリックするとカウントが増える
+  //     setTotalCount(totalCount + 1)
+  //   }
+  //   // 選んだカードの配列は空にする
+  //   setSelectedCard([])
+  // }
+
+  const resetButton = () => {
+    shuffleImages()
+    setTotalCount(0)
     setSelectedCard([])
   }
 
-  useEffect(()=> {
-    if(selectedCard.length === 2 &&
-      selectedCard[0].name === selectedCard[1].name){
-        setSelectedCard([])
+  useEffect(() => {
+    if (selectedCard.length <= 1) {
+      return
     }
-  },[selectedCard])
+    if (selectedCard.length === 2) {
+      if (selectedCard[0].name === selectedCard[1].name) {
+        const openCards = cards.map((card) =>
+          card.id === selectedCard[0].id || card.id === selectedCard[1].id
+            ? { ...card, opened: true }
+            : card
+        )
+        // 当たったもののカードを表にしたままの配列にセット
+        setCards(openCards)
+        setSelectedCard([])
+      } else {
+        setTimeout(() => {
+          const resetCards = cards.map((card) =>
+            card.id === selectedCard[0].id || card.id === selectedCard[1].id
+              ? { ...card, opened: false }
+              : card
+          )
+          setCards(resetCards)
+          setSelectedCard([])
+          // ボタンをクリックするとカウントが増える
+          setTotalCount(totalCount + 1)
+        }, 1500)
+      }
+    }
+  }, [selectedCard])
 
   useEffect(() => {
     if (totalCount >= 9) {
@@ -204,8 +233,8 @@ function App() {
         </div>
       </div>
       <div>
-        <button type="button" onClick={() => clickButton()}>
-          めくり終わったら押すボタン
+        <button type="button" onClick={() => resetButton()}>
+          はじめから
         </button>
       </div>
       <meta name="viewport" content="width=device-width,initial-scale=1" />
